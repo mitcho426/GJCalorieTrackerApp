@@ -9,16 +9,36 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            DashboardView()
+                .tabItem {
+                    Label("Dashboard", systemImage: "chart.pie.fill")
+                }
+                .tag(0)
+
+            Text("Food Log Screen")
+                .tabItem {
+                    Label("Food Log", systemImage: "list.bullet")
+                }
+                .tag(1)
+
+            Text("Add Food Screen")
+                .tabItem {
+                    Label("Add Food", systemImage: "plus.circle.fill")
+                }
+                .tag(2)
+
+            Text("Analysis Screen")
+                .tabItem {
+                    Label("Analysis", systemImage: "chart.bar.fill")
+                }
+                .tag(3)
         }
-        .padding()
     }
 }
 
-#Preview {
-    ContentView()
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
 }
