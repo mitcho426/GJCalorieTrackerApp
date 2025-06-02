@@ -13,18 +13,62 @@ struct DashboardView: View {
                 //     .frame(maxWidth: .infinity, alignment: .leading)
 
                 RoundedCardView {
-                    VStack(alignment: .leading, spacing: 16) { // Added alignment
-                        Text("Macronutrients") // New card title
+                    VStack(alignment: .center, spacing: 20) { // Adjusted main VStack spacing
+                        Text("Macronutrients") // Card title
                             .font(.title.weight(.semibold))
                             .foregroundColor(Color.premiumIndigo)
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .frame(maxWidth: .infinity, alignment: .leading) // Keep title aligned left
+
+                        // Calories CircularProgressView
+                        CircularProgressView(
+                            progress: viewModel.dailySummary.calories / (viewModel.dailySummary.goalCalories == 0 ? 1 : viewModel.dailySummary.goalCalories),
+                            color: Color.premiumOrange,
+                            lineWidth: 12,
+                            label: String(format: "%.0f\nKCAL", viewModel.dailySummary.calories),
+                            labelFont: .title3.weight(.bold) // Larger font for calorie circle label
+                        )
+                        .frame(width: 120, height: 120)
+                        .padding(.bottom, 5) // Adjusted padding
+
+                        // HStack for Protein, Carbs, Fat CircularProgressViews
+                        HStack(spacing: 15) {
+                            CircularProgressView(
+                                progress: viewModel.dailySummary.protein / (viewModel.dailySummary.goalProtein == 0 ? 1 : viewModel.dailySummary.goalProtein),
+                                color: Color.premiumIndigo,
+                                lineWidth: 8,
+                                label: String(format: "%.0fg\nPRO", viewModel.dailySummary.protein)
+                                // No labelFont specified, uses default .caption.weight(.medium)
+                            )
+                            .frame(width: 70, height: 70)
+
+                            CircularProgressView(
+                                progress: viewModel.dailySummary.carbs / (viewModel.dailySummary.goalCarbs == 0 ? 1 : viewModel.dailySummary.goalCarbs),
+                                color: Color.premiumMint,
+                                lineWidth: 8,
+                                label: String(format: "%.0fg\nCHO", viewModel.dailySummary.carbs)
+                                // No labelFont specified, uses default .caption.weight(.medium)
+                            )
+                            .frame(width: 70, height: 70)
+
+                            CircularProgressView(
+                                progress: viewModel.dailySummary.fat / (viewModel.dailySummary.goalFat == 0 ? 1 : viewModel.dailySummary.goalFat),
+                                color: Color.premiumOrange.opacity(0.7),
+                                lineWidth: 8,
+                                label: String(format: "%.0fg\nFAT", viewModel.dailySummary.fat)
+                                // No labelFont specified, uses default .caption.weight(.medium)
+                            )
+                            .frame(width: 70, height: 70)
+                        }
+                        .padding(.bottom, 15) // Adjusted padding, spacing before horizontal bars
 
                         MacroProgressBar(
                             label: "Calories",
                             currentValue: viewModel.dailySummary.calories,
                             goalValue: viewModel.dailySummary.goalCalories,
                             color: .premiumOrange, // Accent color
-                            unit: "kcal"
+                            unit: "kcal",
+                            labelFont: .callout.weight(.semibold),
+                            valueFont: .callout
                         )
 
                         // Removed old "Macronutrients" sub-header text here
@@ -34,21 +78,27 @@ struct DashboardView: View {
                             currentValue: viewModel.dailySummary.protein,
                             goalValue: viewModel.dailySummary.goalProtein,
                             color: .premiumIndigo, // Primary color
-                            unit: "g"
+                            unit: "g",
+                            labelFont: .callout.weight(.semibold),
+                            valueFont: .callout
                         )
                         MacroProgressBar(
                             label: "Carbs",
                             currentValue: viewModel.dailySummary.carbs,
                             goalValue: viewModel.dailySummary.goalCarbs,
                             color: .premiumMint, // Secondary color
-                            unit: "g"
+                            unit: "g",
+                            labelFont: .callout.weight(.semibold),
+                            valueFont: .callout
                         )
                         MacroProgressBar(
                             label: "Fat",
                             currentValue: viewModel.dailySummary.fat,
                             goalValue: viewModel.dailySummary.goalFat,
                             color: Color.premiumOrange.opacity(0.7), // Distinct color
-                            unit: "g"
+                            unit: "g",
+                            labelFont: .callout.weight(.semibold),
+                            valueFont: .callout
                         )
                     }
                 }
