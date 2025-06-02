@@ -7,13 +7,18 @@ struct DashboardView: View {
         ScrollView {
             VStack(spacing: 24) {
                 // MARK: - Daily Macronutrient Summary
-                Text("Daily Summary")
-                    .font(.largeTitle.weight(.bold))
-                    .foregroundColor(Color.premiumIndigo)
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                // Text("Daily Summary") // Removed as per request
+                //     .font(.largeTitle.weight(.bold))
+                //     .foregroundColor(Color.premiumIndigo)
+                //     .frame(maxWidth: .infinity, alignment: .leading)
 
                 RoundedCardView {
-                    VStack(spacing: 16) {
+                    VStack(alignment: .leading, spacing: 16) { // Added alignment
+                        Text("Macronutrients") // New card title
+                            .font(.title.weight(.semibold))
+                            .foregroundColor(Color.premiumIndigo)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
                         MacroProgressBar(
                             label: "Calories",
                             currentValue: viewModel.dailySummary.calories,
@@ -22,9 +27,7 @@ struct DashboardView: View {
                             unit: "kcal"
                         )
 
-                        Text("Macronutrients")
-                            .font(.title2.weight(.semibold))
-                            .frame(maxWidth: .infinity, alignment: .leading)
+                        // Removed old "Macronutrients" sub-header text here
 
                         MacroProgressBar(
                             label: "Protein",
@@ -51,65 +54,66 @@ struct DashboardView: View {
                 }
 
                 // MARK: - Detailed Macronutrient Breakdown
-                Text("Detailed Breakdown")
+                Text("Detailed Breakdown") // This title remains
                     .font(.largeTitle.weight(.bold))
                     .foregroundColor(Color.premiumIndigo)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
                 // Carbs Card
                 RoundedCardView {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) { // Adjusted spacing
                         Text("Carbohydrates")
                             .font(.title.weight(.semibold))
                             .foregroundColor(Color.premiumMint)
                             .padding(.bottom, 4)
 
-                        Text("Total Carbs: \(viewModel.carbDetails.totalCarbs, specifier: "%.0f")g / \(viewModel.carbDetails.goalTotalCarbs, specifier: "%.0f")g")
-                        Text("Sugars: \(viewModel.carbDetails.sugars, specifier: "%.0f")g / \(viewModel.carbDetails.goalSugars, specifier: "%.0f")g")
-                        Text("Added Sugars: \(viewModel.carbDetails.addedSugars, specifier: "%.0f")g / \(viewModel.carbDetails.goalAddedSugars, specifier: "%.0f")g")
-                        Text("Fiber: \(viewModel.carbDetails.fiber, specifier: "%.0f")g / \(viewModel.carbDetails.goalFiber, specifier: "%.0f")g")
-                        Text("Starches: \(viewModel.carbDetails.starches, specifier: "%.0f")g / \(viewModel.carbDetails.goalStarches, specifier: "%.0f")g")
+                        MacroProgressBar(label: "Total Carbs", currentValue: viewModel.carbDetails.totalCarbs, goalValue: viewModel.carbDetails.goalTotalCarbs, color: Color.premiumMint, unit: "g")
+                        MacroProgressBar(label: "Sugars", currentValue: viewModel.carbDetails.sugars, goalValue: viewModel.carbDetails.goalSugars, color: Color.premiumMint.opacity(0.8), unit: "g")
+                        MacroProgressBar(label: "Added Sugars", currentValue: viewModel.carbDetails.addedSugars, goalValue: viewModel.carbDetails.goalAddedSugars, color: Color.premiumMint.opacity(0.6), unit: "g")
+                        MacroProgressBar(label: "Fiber", currentValue: viewModel.carbDetails.fiber, goalValue: viewModel.carbDetails.goalFiber, color: Color.premiumMint.opacity(0.7), unit: "g")
+                        MacroProgressBar(label: "Starches", currentValue: viewModel.carbDetails.starches, goalValue: viewModel.carbDetails.goalStarches, color: Color.premiumMint.opacity(0.5), unit: "g")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 // Protein Card
                 RoundedCardView {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) { // Adjusted spacing
                         Text("Protein")
                             .font(.title.weight(.semibold))
                             .foregroundColor(Color.premiumIndigo)
                             .padding(.bottom, 4)
 
-                        // Placeholder for total protein. Summing all amino acids is verbose and ideally handled in ViewModel or Model.
-                        Text("Total Protein: \(viewModel.dailySummary.protein, specifier: "%.0f")g / \(viewModel.dailySummary.goalProtein, specifier: "%.0f")g")
-                        Text("Histidine: \(viewModel.proteinDetails.histidine, specifier: "%.1f")g / \(viewModel.proteinDetails.goalHistidine, specifier: "%.1f")g")
-                        Text("Leucine: \(viewModel.proteinDetails.leucine, specifier: "%.1f")g / \(viewModel.proteinDetails.goalLeucine, specifier: "%.1f")g")
-                        Text("Lysine: \(viewModel.proteinDetails.lysine, specifier: "%.1f")g / \(viewModel.proteinDetails.goalLysine, specifier: "%.1f")g")
-                        Text("Collagen: \(viewModel.proteinDetails.collagen, specifier: "%.1f")g / \(viewModel.proteinDetails.goalCollagen, specifier: "%.1f")g")
-                        Text("More detailed amino acid breakdown available...")
+                        MacroProgressBar(label: "Leucine", currentValue: viewModel.proteinDetails.leucine, goalValue: viewModel.proteinDetails.goalLeucine, color: Color.premiumIndigo.opacity(0.8), unit: "g")
+                        MacroProgressBar(label: "Lysine", currentValue: viewModel.proteinDetails.lysine, goalValue: viewModel.proteinDetails.goalLysine, color: Color.premiumIndigo.opacity(0.7), unit: "g")
+                        MacroProgressBar(label: "Glutamine", currentValue: viewModel.proteinDetails.glutamine, goalValue: viewModel.proteinDetails.goalGlutamine, color: Color.premiumIndigo.opacity(0.6), unit: "g")
+                        MacroProgressBar(label: "Collagen", currentValue: viewModel.proteinDetails.collagen, goalValue: viewModel.proteinDetails.goalCollagen, color: Color.premiumIndigo.opacity(0.5), unit: "g")
+                        Text("Other amino acids not shown for brevity.")
                             .font(.caption)
                             .foregroundColor(.secondary)
+                            .padding(.top, 4)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 // Fats Card
                 RoundedCardView {
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 12) { // Adjusted spacing
                         Text("Fats")
                             .font(.title.weight(.semibold))
                             .foregroundColor(Color.premiumOrange)
                             .padding(.bottom, 4)
 
-                        Text("Total Fat: \(viewModel.fatDetails.totalFat, specifier: "%.0f")g / \(viewModel.fatDetails.goalTotalFat, specifier: "%.0f")g")
-                        Text("Saturated: \(viewModel.fatDetails.saturated, specifier: "%.0f")g / \(viewModel.fatDetails.goalSaturated, specifier: "%.0f")g")
-                        Text("Unsaturated: \(viewModel.fatDetails.unsaturated, specifier: "%.0f")g / \(viewModel.fatDetails.goalUnsaturated, specifier: "%.0f")g")
-                        Text("Trans Fats: \(viewModel.fatDetails.transFats, specifier: "%.0f")g / \(viewModel.fatDetails.goalTransFats, specifier: "%.0f")g")
-                        Text("Omega-3: \(viewModel.fatDetails.omega3, specifier: "%.1f")g / \(viewModel.fatDetails.goalOmega3, specifier: "%.1f")g")
-                        Text("Omega-6: \(viewModel.fatDetails.omega6, specifier: "%.1f")g / \(viewModel.fatDetails.goalOmega6, specifier: "%.1f")g")
-                        Text("Polyunsaturated: \(viewModel.fatDetails.polyUnsaturated, specifier: "%.0f")g / \(viewModel.fatDetails.goalPolyUnsaturated, specifier: "%.0f")g")
-                        Text("Monounsaturated: \(viewModel.fatDetails.monoUnsaturated, specifier: "%.0f")g / \(viewModel.fatDetails.goalMonoUnsaturated, specifier: "%.0f")g")
+                        MacroProgressBar(label: "Total Fat", currentValue: viewModel.fatDetails.totalFat, goalValue: viewModel.fatDetails.goalTotalFat, color: Color.premiumOrange, unit: "g")
+                        MacroProgressBar(label: "Saturated", currentValue: viewModel.fatDetails.saturated, goalValue: viewModel.fatDetails.goalSaturated, color: Color.premiumOrange.opacity(0.8), unit: "g")
+                        MacroProgressBar(label: "Unsaturated", currentValue: viewModel.fatDetails.unsaturated, goalValue: viewModel.fatDetails.goalUnsaturated, color: Color.premiumOrange.opacity(0.7), unit: "g")
+                        MacroProgressBar(label: "Trans Fats", currentValue: viewModel.fatDetails.transFats, goalValue: viewModel.fatDetails.goalTransFats, color: Color.red, unit: "g") // Using .red for trans fats
+                        MacroProgressBar(label: "Omega-3", currentValue: viewModel.fatDetails.omega3, goalValue: viewModel.fatDetails.goalOmega3, color: Color.premiumOrange.opacity(0.6), unit: "g")
+                        MacroProgressBar(label: "Omega-6", currentValue: viewModel.fatDetails.omega6, goalValue: viewModel.fatDetails.goalOmega6, color: Color.premiumOrange.opacity(0.5), unit: "g")
+                        // Poly and Mono unsaturated are not explicitly in FatDetails, 'unsaturated' is a general term.
+                        // If more specific data becomes available, these can be added.
+                        // MacroProgressBar(label: "Polyunsaturated", currentValue: viewModel.fatDetails.polyUnsaturated, goalValue: viewModel.fatDetails.goalPolyUnsaturated, color: Color.premiumOrange.opacity(0.4), unit: "g")
+                        // MacroProgressBar(label: "Monounsaturated", currentValue: viewModel.fatDetails.monoUnsaturated, goalValue: viewModel.fatDetails.goalMonoUnsaturated, color: Color.premiumOrange.opacity(0.3), unit: "g")
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
@@ -123,5 +127,8 @@ struct DashboardView: View {
 struct DashboardView_Previews: PreviewProvider {
     static var previews: some View {
         DashboardView()
+            .preferredColorScheme(.dark) // Example: Preview in dark mode
+        DashboardView()
+            .preferredColorScheme(.light) // Example: Preview in light mode
     }
 }

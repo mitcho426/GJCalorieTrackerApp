@@ -20,7 +20,7 @@ struct MacroProgressBar: View {
                 Text(label)
                     .font(.caption.bold())
                 Spacer()
-                Text(String(format: "%.0fg / %.0f%@", currentValue, goalValue, unit))
+                Text(String(format: "%.1f / %.1f %@", currentValue, goalValue, unit))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
